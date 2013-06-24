@@ -167,5 +167,9 @@ class JennicProtocol:
         """
         return self.talk( 0x1F, 0x20, addr, len )[1:] # strip command status
 
+    def read_chipid(self):
+        """ read the chip id. Returns """
+        return self.talk( 0x32, 0x33)[1:]
+
     def finish(self):
         pass

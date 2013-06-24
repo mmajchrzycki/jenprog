@@ -89,6 +89,9 @@ if options.show or options.erase:
     stdout.write(" license: 0x")
     for b in bl.read_license(): stdout.write("%02x"%b)
     stdout.write("\n")
+    stdout.write("Chip ID: ")
+    for b in bl.read_chipid(): stdout.write("%02x" % b)
+    stdout.write("\n")
     if options.erase: bl.erase_flash()
 
 elif options.mac or options.key:
