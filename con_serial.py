@@ -74,9 +74,9 @@ class SerialBootloader(JennicProtocol):
         sys.stdout.write("done\n")
 
         # switch to maximum baudrate
-        self.ser.write(pack("<BBBB", 3,0x27,1,self.crc([3,0x27,1],3)))
-        self.ser.read(3)
-        self.ser.setBaudrate(1000000)
+        #self.ser.write(pack("<BBBB", 3,0x27,1,self.crc([3,0x27,1],3)))
+        #self.ser.read(3)
+        #self.ser.setBaudrate(1000000)
 
         JennicProtocol.__init__(self)
 
