@@ -43,7 +43,8 @@ class JennicProtocol:
 
     def select_flash(self):
         self.identify_flash()
-        if not self.flash_jennicid in (0x00, 0x01, 0x02, 0x03):
+        if not self.flash_jennicid in (0x00, 0x01, 0x02, 0x03, 0x08):
+            print "self.flash_jennicid %s" % self.flash_jennicid
             print "unsupported flash type"
             sys.exit(1)
         status = self.talk(0x2C, 0x2D, data = [self.flash_jennicid])[0]
@@ -56,6 +57,7 @@ class JennicProtocol:
         self.flash_status       = flash[0]
         self.flash_manufacturer = flash[1]
         self.flash_type         = flash[2]
+        print "flash : ", flash
 
         if not self.flash_status == 0:
             print "flash status != 0 (%c)"%self.flash_status
@@ -78,6 +80,10 @@ class JennicProtocol:
             self.flash_manufacturer = "ST"
             self.flash_type         = "M25P40"
             self.flash_jennicid     = 0x03
+        elif self.flash_manufacturer == 0xcc and self.flash_type == 0xee:
+            self.flash_manufacturer = "jennic"
+            self.flash_type         = "internal flash"
+            self.flash_jennicid     = 0x08
         else:
             self.flash_manufacturer = "unknown"
             self.flash_type         = "unknown"
