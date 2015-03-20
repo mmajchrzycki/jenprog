@@ -97,6 +97,14 @@ class SerialBootloader(JennicProtocol):
                 msg += pack('<%is'%len(data), "".join(map(chr,data)))
         msg += pack('<B', self.crc(map(ord,msg), len(msg)))
 
+        if self.isverbose:
+            verbose_str = ""
+            for i in range(0, len(msg)):
+                verbose_str += "0x%02x " % ord(msg[i])
+            sys.stderr.write("SEND: ")
+            sys.stderr.write(verbose_str)
+            sys.stderr.write("\n")
+
         if anstype == None:
             return []
 
@@ -106,6 +114,15 @@ class SerialBootloader(JennicProtocol):
             n,ans = ord(self.ser.read(1)), ""
             while len(ans)<n: # TODO: problematic
                 ans += self.ser.read(n)
+
+            if len(ans):
+                if self.isverbose:
+                    verbose_str = ""
+                    for i in range(0, len(ans)):
+                        verbose_str += "0x%02x " % ord(ans[i])
+                    sys.stderr.write("RECV: ")
+                    sys.stderr.write(verbose_str)
+                    sys.stderr.write("\n")
 
         except TypeError: # thrown when self.ser.read() gets nothing
             self.ser.timeout = self.MAX_TIMEOUT
