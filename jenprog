@@ -126,6 +126,7 @@ else:
     # start reading the file, 0x80 seems to be the only blocksize
     # working for the jennic bootloader with certain flashtypes
     block,i,start = bl.preferedblocksize or 0x80,0,time()
+    file.seek(4)
     data = file.read(block)
     addr = 0x00000000
 
@@ -153,10 +154,10 @@ else:
     kb,sec  = size/1000., (time()-start)
     stderr.write("done - %0.2f kb/s "%(kb/sec))
 
-    stderr.write("- writing mac address and key..")
-    bl.write_mac()
-    bl.write_license()
-    stderr.write("done\n")
+    # stderr.write("- writing mac address and key..")
+    # bl.write_mac()
+    # bl.write_license()
+    stderr.write("\n")
 
     if options.verify:
         raise Exception, "not implemented"
