@@ -34,8 +34,8 @@ import sys
 
 class JennicProtocol:
     def __init__(self):
-        self.mac_region    = range(0x00000030, 0x00000038)
-        self.lic_region    = range(0x00000038, 0x00000048)
+        self.mac_region = range(0x01001580, 0x01001588)
+        self.lic_region = range(0x01001500, 0x01001516)
         self.mac, self.lic = None, None
         self.isverbose     = None
         self.preferedblocksize = None
@@ -138,10 +138,10 @@ class JennicProtocol:
             sys.exit(1)
 
     def read_mac(self):
-        return self.read_flash(self.mac_region[0], len(self.mac_region))
+        return self.read_ram(self.mac_region[0], len(self.mac_region))
 
     def read_license(self):
-        return self.read_flash(self.lic_region[0], len(self.lic_region))
+        return self.read_ram(self.lic_region[0], len(self.lic_region))
 
     def write_license(self):
         self.write_flash(self.lic_region[0], self.lic)
