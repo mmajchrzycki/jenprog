@@ -15,7 +15,7 @@
 #    of its contributors may be used to endorse or promote products
 #    derived from this software without specific prior written
 #    permission.
-# 
+#  
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -60,10 +60,16 @@ class SerialBootloader(JennicProtocol):
         self.ser.setBaudrate(115200)
         self.ser.setBaudrate(38400)
 
-        # switch to programming mode for boards that support it, atm
-        # there is the jnode and jbee platform
-        self.ser.setDTR(0); sleep(.01); self.ser.setDTR(1); sleep(.2)
-
+        # switch to programming mode for boards that support it
+        # assert RESETn and SPI_MOSI (DO1)
+        self.ser.setRTS(1)
+        self.ser.setDTR(1)
+        sleep(.01)
+        # deassert RESETn (start CPU)
+        self.ser.setRTS(0)
+        sleep(.2)
+        # deassert SPIMOSI
+        self.ser.setDTR(0)
         # read everything that is clogging up the input buffer, until we can
         # be sure that we are in programming mode.
         sys.stdout.write("waiting until queues are emtpy..")
